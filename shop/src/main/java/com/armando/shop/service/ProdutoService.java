@@ -14,4 +14,6 @@ public interface ProdutoService {
     Page<ProdutoDTO> listaProdutosCodigo(String codigo, Pageable pageable);
 
     List<Produto> listaTodosProdutos();
+
+    Produto buscaPorId(String id);
 }

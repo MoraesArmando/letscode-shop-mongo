@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -21,7 +20,7 @@ public class Compra {
 
     @Id
     private String id;
-    private LocalDateTime dataCompra;
+    private LocalDate dataCompra;
     private BigDecimal valorTotal;
     private String cpf;
 
@@ -33,6 +32,7 @@ public class Compra {
                 .dataCompra(compraDTO.getDataCompra())
                 .valorTotal(compraDTO.getValorTotal())
                 .cpf(compraDTO.getCpf())
+                .produtos(compraDTO.getProdutos())
                 .build();
     }
 

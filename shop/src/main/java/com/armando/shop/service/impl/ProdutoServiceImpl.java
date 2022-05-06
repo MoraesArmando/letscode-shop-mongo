@@ -22,6 +22,7 @@ public class ProdutoServiceImpl implements ProdutoService {
         return ProdutoDTO.convert(produtoRepository.save(produto));
     }
 
+
     @Override
     public Page<ProdutoDTO> listaProdutosCodigo(String codigo, Pageable pageable) {
         return produtoRepository.findByCodigo(codigo, pageable);
@@ -30,5 +31,10 @@ public class ProdutoServiceImpl implements ProdutoService {
     @Override
     public List<Produto> listaTodosProdutos( ) {
         return produtoRepository.findAll();
+    }
+
+    @Override
+    public Produto buscaPorId(String id) {
+        return produtoRepository.findById(id).orElseThrow(()->new RuntimeException("Id não encontrado"));
     }
 }

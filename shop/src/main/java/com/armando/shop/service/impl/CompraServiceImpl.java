@@ -16,10 +16,15 @@ import java.util.List;
 public class CompraServiceImpl implements CompraService {
 
     private final CompraRepository compraRepository;
+    //private final ProdutoServiceImpl produtoService;
 
 
     public CompraDTO criarCompra(CompraDTO compraDTO) {
+       // Produto produto = produtoService.buscaPorId(compraDTO.getProdutos().getId());
         Compra compra = Compra.convert(compraDTO);
+        //compra.setProdutos(produto);
+
+
         return CompraDTO.convert(compraRepository.save(compra));
     }
 
