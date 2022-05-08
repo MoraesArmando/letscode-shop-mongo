@@ -12,12 +12,10 @@ public interface ProdutoService {
 
     ProdutoDTO criaProduto(ProdutoDTO produtoDTO);
 
-    Page<ProdutoDTO> listaProdutosPorCodigo(String codigo, Pageable pageable);
-
-    List<Produto> listaTodosProdutos();
+    Page<Produto> listaTodosProdutos(Pageable pageable);
 
     ProdutoDTO buscaPorId(String id);
 
-    Boolean atualizaQuantidade(List<ProdutoCompra> produtoCompra);
+    void atualizaQuantidade(List<ProdutoCompra> produtoCompra);
 
 }

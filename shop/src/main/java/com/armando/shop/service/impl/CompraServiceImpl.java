@@ -36,8 +36,16 @@ public class CompraServiceImpl implements CompraService {
         return CompraDTO.convert(compraRepository.save(compra));
     }
 
-    private Boolean verificaQuantidadeProduto(List<ProdutoCompra> produtoCompra) {
-        return produtoService.atualizaQuantidade(produtoCompra);
+    public Page<CompraDTO> listaCpfPage(String cpf, Pageable pageable) {
+        return compraRepository.findByCpf(cpf, pageable);
+    }
+
+    @Override
+    public Page<CompraDTO> listaTodasCompras(Pageable pageable) {
+        return compraRepository.findAll(pageable).map(CompraDTO::convert);
+    }
+    private void verificaQuantidadeProduto(List<ProdutoCompra> produtoCompra) {
+        produtoService.atualizaQuantidade(produtoCompra);
     }
 
     private Float calculaValorTotal(CompraDTO compraDTO) {
@@ -47,14 +55,6 @@ public class CompraServiceImpl implements CompraService {
             valorTotal += produtoDTO.getPreco() * p.getQuantidade();
         }
         return valorTotal;
-    }
-
-    public Page<CompraDTO> listaCpfPage(String cpf, Pageable pageable) {
-        return compraRepository.findByCpf(cpf, pageable);
-    }
-
-    public List<Compra> listaTodasCompras() {
-        return compraRepository.findAll();
     }
 
 }

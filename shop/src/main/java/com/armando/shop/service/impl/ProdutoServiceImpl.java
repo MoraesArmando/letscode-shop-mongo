@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -21,34 +22,29 @@ public class ProdutoServiceImpl implements ProdutoService {
     @Override
     public ProdutoDTO criaProduto(ProdutoDTO produtoDTO) {
         Produto produto = Produto.convert(produtoDTO);
+        produto.setId(UUID.randomUUID().toString());
         return ProdutoDTO.convert(produtoRepository.save(produto));
     }
 
     @Override
-    public Page<ProdutoDTO> listaProdutosPorCodigo(String codigo, Pageable pageable) {
-        return produtoRepository.findByCodigo(codigo, pageable);
-    }
+    public Page<Produto> listaTodosProdutos(Pageable pageable) {
+        return produtoRepository.findAll(pageable);
 
-
-    @Override
-    public List<Produto> listaTodosProdutos() {
-        return produtoRepository.findAll();
     }
 
     @Override
     public ProdutoDTO buscaPorId(String id) {
-        return ProdutoDTO.convert( produtoRepository.findById(id).orElseThrow(() -> new RuntimeException("Id não encontrado")));
+        return ProdutoDTO.convert(produtoRepository.findById(id).orElseThrow(() -> new RuntimeException("Id não encontrado")));
     }
 
-    public Boolean atualizaQuantidade(List<ProdutoCompra> produtoCompra) {
-        for (ProdutoCompra p:
-             produtoCompra) {
+    public void atualizaQuantidade(List<ProdutoCompra> produtoCompra) {
+        for (ProdutoCompra p :
+                produtoCompra) {
             ProdutoDTO produtoDTO = buscaPorId(p.getIdProduto());
-            if (produtoDTO.getQuantidade()>p.getQuantidade()){
-                return true;
+            if (!(produtoDTO.getQuantidade() > p.getQuantidade())) {
+                throw new RuntimeException("Produto com quantidade insuficiente " + p.getIdProduto());
             }
-            throw new RuntimeException("Produto com quantidade insuficiente " + p.getIdProduto());
         }
-        return false;
     }
+
 }

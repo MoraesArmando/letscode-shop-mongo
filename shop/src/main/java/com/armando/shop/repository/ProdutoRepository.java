@@ -7,5 +7,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface ProdutoRepository extends MongoRepository<Produto, String> {
-    Page<ProdutoDTO> findByCodigo(String codigo, Pageable pageable);
+    Produto findByCodigo(String codigo);
 }

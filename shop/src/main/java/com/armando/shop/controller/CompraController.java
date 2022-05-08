@@ -25,11 +25,11 @@ public class CompraController {
     }
 
     @GetMapping
-    public List<Compra> listaTodasCompras(){
-        return compraService.listaTodasCompras();
+    public Page<CompraDTO> listaTodasCompras(@PageableDefault Pageable pageable){
+        return compraService.listaTodasCompras(pageable);
     }
 
-    @GetMapping("/")
+    @GetMapping("/busca")   
     public Page<CompraDTO> buscaPorCpfPage(@RequestParam(name = "cpf", required = false) String cpf, @PageableDefault Pageable pageable){
         return compraService.listaCpfPage(cpf,pageable);
     }
