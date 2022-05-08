@@ -14,4 +14,5 @@ public interface CompraService {
      Page<CompraDTO> listaCpfPage(String cpf, Pageable pageable);
 
      List<Compra> listaTodasCompras();
+
 }

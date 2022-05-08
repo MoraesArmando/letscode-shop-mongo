@@ -5,11 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -20,19 +18,18 @@ public class Compra {
 
     @Id
     private String id;
-    private LocalDate dataCompra;
-    private BigDecimal valorTotal;
+    private LocalDateTime dataCompra;
+    private float valorTotal;
     private String cpf;
 
-    @DBRef
-    private List<Produto> produtos;
+    private List<ProdutoCompra> produtoCompra;
 
     public static Compra convert(CompraDTO compraDTO){
         return Compra.builder()
                 .dataCompra(compraDTO.getDataCompra())
                 .valorTotal(compraDTO.getValorTotal())
                 .cpf(compraDTO.getCpf())
-                .produtos(compraDTO.getProdutos())
+                .produtoCompra(compraDTO.getProdutoCompra())
                 .build();
     }
 

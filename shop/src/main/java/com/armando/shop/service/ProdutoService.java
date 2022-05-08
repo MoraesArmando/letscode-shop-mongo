@@ -2,6 +2,7 @@ package com.armando.shop.service;
 
 import com.armando.shop.dto.ProdutoDTO;
 import com.armando.shop.model.Produto;
+import com.armando.shop.model.ProdutoCompra;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -11,9 +12,12 @@ public interface ProdutoService {
 
     ProdutoDTO criaProduto(ProdutoDTO produtoDTO);
 
-    Page<ProdutoDTO> listaProdutosCodigo(String codigo, Pageable pageable);
+    Page<ProdutoDTO> listaProdutosPorCodigo(String codigo, Pageable pageable);
 
     List<Produto> listaTodosProdutos();
 
-    Produto buscaPorId(String id);
+    ProdutoDTO buscaPorId(String id);
+
+    Boolean atualizaQuantidade(List<ProdutoCompra> produtoCompra);
+
 }

@@ -5,15 +5,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @Getter
 @Setter
 @Builder
 public class ProdutoDTO {
 
     private String codigo;
-    private BigDecimal preco;
+    private Float preco;
     private Integer quantidade;
 
     public static ProdutoDTO convert(Produto produto){

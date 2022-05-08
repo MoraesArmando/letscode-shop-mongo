@@ -7,8 +7,6 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.math.BigDecimal;
-
 @Getter
 @Setter
 @Builder
@@ -18,7 +16,7 @@ public class Produto {
     @Id
     private String id;
     private String codigo;
-    private BigDecimal preco;
+    private Float preco;
     private Integer quantidade;
 
     public static Produto convert(ProdutoDTO produtoDTO){

@@ -1,7 +1,9 @@
 package com.armando.shop.service.impl;
 
 import com.armando.shop.dto.CompraDTO;
+import com.armando.shop.dto.ProdutoDTO;
 import com.armando.shop.model.Compra;
+import com.armando.shop.model.ProdutoCompra;
 import com.armando.shop.repository.CompraRepository;
 import com.armando.shop.service.CompraService;
 import lombok.RequiredArgsConstructor;
@@ -9,30 +11,50 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class CompraServiceImpl implements CompraService {
 
     private final CompraRepository compraRepository;
-    //private final ProdutoServiceImpl produtoService;
+    private final ProdutoServiceImpl produtoService;
 
 
-    public CompraDTO criarCompra(CompraDTO compraDTO) {
-       // Produto produto = produtoService.buscaPorId(compraDTO.getProdutos().getId());
-        Compra compra = Compra.convert(compraDTO);
-        //compra.setProdutos(produto);
+    public CompraDTO criarCompra(CompraDTO dto) {
+        verificaQuantidadeProduto(dto.getProdutoCompra());
 
+        dto.setDataCompra(LocalDateTime.now());
+        if (dto.getProdutoCompra() != null) {
+            dto.setValorTotal(calculaValorTotal(dto));
+        }
+        Compra compra = Compra.convert(dto);
+        compra.setId((UUID.randomUUID().toString()));
 
         return CompraDTO.convert(compraRepository.save(compra));
     }
 
+    private Boolean verificaQuantidadeProduto(List<ProdutoCompra> produtoCompra) {
+        return produtoService.atualizaQuantidade(produtoCompra);
+    }
+
+    private Float calculaValorTotal(CompraDTO compraDTO) {
+        float valorTotal = 0;
+        for (ProdutoCompra p : compraDTO.getProdutoCompra()) {
+            ProdutoDTO produtoDTO = produtoService.buscaPorId(p.getIdProduto());
+            valorTotal += produtoDTO.getPreco() * p.getQuantidade();
+        }
+        return valorTotal;
+    }
+
     public Page<CompraDTO> listaCpfPage(String cpf, Pageable pageable) {
-        return compraRepository.findByCpf(cpf,pageable);
+        return compraRepository.findByCpf(cpf, pageable);
     }
 
     public List<Compra> listaTodasCompras() {
-        return  compraRepository.findAll();
+        return compraRepository.findAll();
     }
+
 }
